@@ -1,0 +1,70 @@
+---
+title: "Exit and Bounce Rates per Page"
+author: "Kavitha"
+output:
+  flexdashboard::flex_dashboard:
+    orientation: rows
+    vertical_layout: scroll
+---
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+library(flexdashboard)
+library(googleAuthR)
+library(googleAnalyticsR)
+library(ggplot2)
+library(plotly)
+library(scales)
+```
+
+```{r, include=FALSE}
+ga_data <- read.csv("D:/SSU/Day 1/ViewPages.csv", sep=",", header=T)
+
+# Cleaning up data
+ga_data.toPlot <- data.frame(ga_data)
+ga_data.toPlot$Page <- factor(ga_data.toPlot$Page, levels = rev(ga_data.toPlot$Page))
+
+```
+
+Column {data-width=600}
+-----------------------------------------------------------------------
+
+
+### Bounce Rate
+
+```{r}
+bounce.Rate.Plot <- ggplot(ga_data.toPlot, aes(x=Page, y=Bounce.Rate)) +
+  geom_bar(fill="cornflowerblue", stat="identity", width=.8, show.legend = FALSE) +
+  coord_flip() +
+  ylim(0, 1.0) + 
+  geom_text(aes(y = Bounce.Rate, label = percent(Bounce.Rate)), hjust = -0.1) +
+  geom_hline(yintercept = 0.5, linetype="dashed") + 
+  ylab("Bounce Rate") + 
+  xlab("Page Path")
+
+bounce.Rate.Plot
+
+
+```
+
+Column {data-width=600}
+-----------------------------------------------------------------------
+
+
+### Exit Rate
+
+```{r}
+exit.Rate.Plot <- ggplot(ga_data.toPlot, aes(x=Page, y=Exit.Rate)) +
+  geom_bar(fill="tomato3", stat="identity", width=.8, show.legend = FALSE) + 
+  coord_flip() + 
+  ylim(0, 1.0) +
+  geom_text(aes(y = Exit.Rate, label = percent(Exit.Rate)), hjust = -0.1) +
+  geom_hline(yintercept = 0.5, linetype="dashed") + 
+  ylab("Exit Rate") + 
+  xlab("Page Path")
+
+exit.Rate.Plot
+
+
+```
+
