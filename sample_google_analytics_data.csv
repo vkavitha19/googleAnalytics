@@ -1,0 +1,8 @@
+pagePath,previousPagePath,pageviews,sessions,users
+/home,/,100,80,70
+/about,/home,50,40,35
+/contact,/home,30,25,20
+/products,/home,40,35,30
+/home,/products,120,90,85
+/products,/about,80,70,65
+/about,/,60,50,45
