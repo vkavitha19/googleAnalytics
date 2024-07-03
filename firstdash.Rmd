@@ -1,0 +1,61 @@
+---
+title: "firstdashboard"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+---
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+```
+
+Column {data-width=650}
+-----------------------------------------------------------------------
+
+### Chart A
+
+
+```{r}
+library("googleAuthR")
+library("googleAnalyticsR")
+library("ggplot2")
+library("scales")
+#ga_auth()
+#account_list<-ga_account_list()
+#account_list$viewId
+#ga_data=google_analytics()
+#reading csv
+ga_data<-read.csv("D:/SSU/NewVsRetruning.csv",sep=",",header=TRUE)
+#create a dataframe
+ga_data.toPlot=data.frame(userType=ga_data$User.Type,sessions=ga_data$Sessions)
+#clean the data
+ga_data.toPlot$sessions <- as.numeric(gsub(",", "", ga_data.toPlot$sessions))
+ga_data.toPlot=na.omit(ga_data.toPlot)
+ga_data.toPlot$percentage=ga_data.toPlot$sessions /sum(ga_data.toPlot$sessions)
+ggplot(data = ga_data.toPlot, aes(x = factor(userType), y = sessions, fill = userType)) + 
+  geom_bar(width = 0.6, stat = "identity") +  
+  geom_text(aes(y = sessions / 2, label = percent(percentage)), size = 5) +
+  labs(title = "Sessions by User Type", x = "User Type", y = "Number of Sessions")
+```
+
+Column {data-width=350}
+-----------------------------------------------------------------------
+
+### Chart 2
+
+```{r}
+library(leaflet)
+
+leaflet() %>% 
+  addTiles() %>% 
+  addMarkers(lng=174.768, lat=-36.852, popup="Hello World")
+```
+
+### Chart 3
+
+```{r}
+library("ggplot2")
+qplot(data=trees, x=Girth, y= Height, main="Trees data")
+```
+
